@@ -12,7 +12,6 @@ MODEL_PATH = sys.argv[1]
 OUT_FILE = sys.argv[2]
 COCO_ANN_PATH = 'datasets/coco/annotations/instances_val2017.json'
 COCO_IMG_PATH = 'datasets/coco/val2017'
-INPUT_SIZE = (416, 416)
 CONF_THRES = 0.001
 IOU_THRES = 0.65
 
@@ -80,7 +79,9 @@ def main():
     class_to_coco_cat = {i: cat_id for i, cat_id in enumerate(coco_cat_ids)}
     
     session = ort.InferenceSession(MODEL_PATH, providers=[sys.argv[3]])
-    input_name = session.get_inputs()[0].name
+    input_node = session.get_inputs()[0]
+    input_name = input_node.name
+    expected_h, expected_w = input_node.shape[2:4]
 
     coco_predictions = []
     times = []
@@ -89,7 +90,7 @@ def main():
         img_info = coco.loadImgs(img_id)[0]
         img_path = os.path.join(COCO_IMG_PATH, img_info['file_name'])
 
-        img_tensor, ratio, dw, dh = preprocess(img_path, INPUT_SIZE)
+        img_tensor, ratio, dw, dh = preprocess(img_path, (expected_w, expected_h))
 
         start_time = time.perf_counter()
         outputs = session.run(None, {input_name: img_tensor})
