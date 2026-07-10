@@ -2,7 +2,7 @@ import os
 import csv
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
-from config import DATASET_DIR, ANNOTATIONS, hf_models, PREDICTIONS_DIR, REPORT_DIR
+from config import DATASET_DIR, ANNOTATIONS, hf_models, PREDICTIONS_DIR, RESULTS_DIR
 
 coco = COCO(ANNOTATIONS)
 results_dir = PREDICTIONS_DIR
@@ -31,7 +31,7 @@ for json_path in results_dir.glob("*_results.json"):
         "AR100": round(evaluator.stats[8], 4)
     })
 
-with open(REPORT_DIR / "metrics.csv", "w", encoding="utf-8", newline="") as f:
+with open(RESULTS_DIR / "detr_dfine_metrics.csv", "w", encoding="utf-8", newline="") as f:
     writer = csv.DictWriter(f, fieldnames=list(metrics_results[0].keys()))
     writer.writeheader()
     writer.writerows(metrics_results)

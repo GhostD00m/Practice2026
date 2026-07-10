@@ -3,7 +3,7 @@ import onnx
 import numpy as np
 import hashlib
 import csv
-from config import hf_models, MODELS_ONNX_DIR, REPORT_DIR
+from config import hf_models, MODELS_ONNX_DIR, RESULTS_DIR
 
 info = []
 target_names = [name.split("/")[-1] for name in hf_models]
@@ -28,7 +28,7 @@ for model_path in MODELS_ONNX_DIR.glob("*.onnx"):
     info.append(d)
 
 cols = info[0].keys()
-with open(REPORT_DIR / "model_parameters.csv", "w", encoding="utf-8", newline="") as f:
+with open(RESULTS_DIR / "detr_dfine_parameters.csv", "w", encoding="utf-8", newline="") as f:
     writer = csv.DictWriter(f, fieldnames=cols)
     writer.writeheader()
     writer.writerows(info)

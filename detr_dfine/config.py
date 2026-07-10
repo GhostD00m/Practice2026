@@ -16,8 +16,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 
 WORKSPACE_DIR = PROJECT_ROOT / "detr_dfine"
 
-REPORT_DIR = WORKSPACE_DIR / "report"
-REPORT_DIR.mkdir(exist_ok=True)
+RESULTS_DIR = PROJECT_ROOT / "results"
+RESULTS_DIR.mkdir(exist_ok=True)
 
 PREDICTIONS_DIR = WORKSPACE_DIR / "predictions"
 PREDICTIONS_DIR.mkdir(exist_ok=True)

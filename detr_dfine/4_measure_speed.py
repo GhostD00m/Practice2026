@@ -3,7 +3,7 @@ import time
 import csv
 from pycocotools.coco import COCO
 from libreyolo import LibreYOLO
-from config import DATASET_DIR, ANNOTATIONS, MODELS_ONNX_DIR, hf_models, device, REPORT_DIR
+from config import DATASET_DIR, ANNOTATIONS, MODELS_ONNX_DIR, hf_models, device, RESULTS_DIR
 
 coco = COCO(ANNOTATIONS)
 img_ids = coco.getImgIds()
@@ -43,7 +43,7 @@ for model_path in MODELS_ONNX_DIR.rglob('*.onnx'):
         'Time_ms': round(res * 1000, 2)
     })
 
-with open(REPORT_DIR / "speed.csv", "w", encoding="utf-8", newline="") as f:
+with open(RESULTS_DIR / "detr_dfine_speed.csv", "w", encoding="utf-8", newline="") as f:
     writer = csv.DictWriter(f, fieldnames=['Модель', 'FPS', 'Time_ms'])
     writer.writeheader()
     writer.writerows(speed_results)
