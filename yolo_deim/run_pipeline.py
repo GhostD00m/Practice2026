@@ -1,6 +1,7 @@
 import os 
 import re
 import subprocess
+import csv
 from scripts.evaluate import run_evaluation
 
 
@@ -31,7 +32,7 @@ MODELS_CONFIG = [
         ("LibreDEIMv2", "x", "scripts/inference_LibreDEIMv2.py")
         ]
 
-ANN_PATH = "datasets/coco/annotations/instances_val2017.json"
+ANN_PATH = "../datasets/coco/annotations/instances_val2017.json"
 REPORT_PATH = "Benchmark_Report.md"
 PROVIDER = "CPUExecutionProvider"
 
@@ -84,17 +85,38 @@ def main():
         f.write("# Сравнительный анализ моделей (COCO2017)\n\n")
 
         f.write("## Сводная таблица метрик\n\n")
-        f.write("| Модель | Время (ms) | mAP50-95 | mAP50 | mAP75 | mAP small | mAP medium | mAP large | AR1 | AR100 |\n")
-        f.write("|---|---|---|---|---|---|---|---|---|---|\n")
+        f.write("| Модель | mAP50-95 | mAP50 | mAP75 | mAP small | mAP medium | mAP large | AR1 | AR100 |\n")
+        f.write("|---|---|---|---|---|---|---|---|---|\n")
 
         for row in results_data:
-            f.write(f"| **{row['model']}** | {row['time']} | {row['mAP50-95']} | {row['mAP50']} | {row['mAP75']} | "
+            f.write(f"| **{row['model']}** | {row['mAP50-95']} | {row['mAP50']} | {row['mAP75']} | "
                     f"{row['mAP_s']} | {row['mAP_m']} | {row['mAP_l']} | {row['AR1']} | {row['AR100']} |\n")
 
         f.write("\n## Графики Precision-Recall\n\n")
         for row in results_data:
             f.write(f"### {row['model']}\n")
             f.write(f"![PR Curve {row['model']}]({row['plot']})\n\n")
+
+    # CSV Generation for final results
+    with open("../results/yolo_deim_metrics.csv", "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Модель", "mAP50-95", "mAP50", "mAP75", "mAP small", "mAP medium", "mAP large", "AR1", "AR100"])
+        for row in results_data:
+            writer.writerow([
+                row['model'], row['mAP50-95'], row['mAP50'], row['mAP75'], 
+                row['mAP_s'], row['mAP_m'], row['mAP_l'], row['AR1'], row['AR100']
+            ])
+
+    with open("../results/yolo_deim_speed.csv", "w", encoding="utf-8", newline="") as f:
+        writer = csv.writer(f)
+        writer.writerow(["Модель", "FPS", "Time_ms"])
+        for row in results_data:
+            try:
+                time_ms = float(row['time'])
+                fps = round(1000 / time_ms, 2)
+            except ValueError:
+                fps = "N/A"
+            writer.writerow([row['model'], fps, row['time']])
 
 if __name__ == "__main__":
     main()
