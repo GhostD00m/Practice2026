@@ -38,7 +38,7 @@ PROVIDER = "CPUExecutionProvider"
 
 def main():
     os.makedirs("predictions", exist_ok=True)
-    os.makedirs("images", exist_ok=True)
+    os.makedirs("../results/pr_curves", exist_ok=True)
 
     results_data = []
 
@@ -46,7 +46,7 @@ def main():
         model_name = family + size
         onnx_path = f"weights/{family}/{model_name}.onnx"
         json_path = f"predictions/predictions_{model_name}.json"
-        plot_path = f"images/PR_{model_name}.png"
+        plot_path = f"../results/pr_curves/PR_{model_name}.png"
 
         avg_time = "N/A"
 
