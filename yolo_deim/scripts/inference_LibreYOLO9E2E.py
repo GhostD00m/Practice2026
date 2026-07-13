@@ -10,8 +10,8 @@ import sys
 
 MODEL_PATH = sys.argv[1]
 OUT_FILE = sys.argv[2]
-COCO_ANN_PATH = 'datasets/coco/annotations/instances_val2017.json'
-COCO_IMG_PATH = 'datasets/coco/val2017'
+COCO_ANN_PATH = '../datasets/coco/annotations/instances_val2017.json'
+COCO_IMG_PATH = '../datasets/coco/val2017'
 INPUT_SIZE = (640, 640)
 CONF_THRES = 0.001
 IOU_THRES = 0.65
