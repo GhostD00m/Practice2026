@@ -2,7 +2,7 @@ libreyolo[rfdetr]==1.3.0
 matplotlib
 numpy
 onnx
-onnxruntime
+onnxruntime-gpu
 opencv-python
 pandas
 pycocotools

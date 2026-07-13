@@ -21,7 +21,14 @@ ANNOTATIONS = DATASET_DIR / "annotations" / "instances_val2017.json"
 
 hf_models = [
     "LibreYOLO/LibreDFINEn",
+    "LibreYOLO/LibreDFINEs",
+    "LibreYOLO/LibreDFINEm",
+    "LibreYOLO/LibreDFINEl",
+    "LibreYOLO/LibreDFINEx",
     "LibreYOLO/LibreRFDETRn",
+    "LibreYOLO/LibreRFDETRs",
+    "LibreYOLO/LibreRFDETRm",
+    "LibreYOLO/LibreRFDETRl",
     "LibreYOLO/LibreRTDETRr50m",
     "LibreYOLO/LibreRTDETRv2r50m",
     "LibreYOLO/LibreRTDETRv4m",
@@ -31,7 +38,7 @@ hf_models = [
 ]
 
 device = 'cpu'
-if device == 'cuda':
+if device == 'cuda' and os.name == 'nt':
     for p in site.getsitepackages() + [site.getusersitepackages()]:
         nvidia_dir = os.path.join(p, 'nvidia')
         if os.path.exists(nvidia_dir):
